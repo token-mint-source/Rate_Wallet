@@ -10,10 +10,9 @@
     "@solana/spl-token": "^0.4.1",
     "wagmi": "^2.12.4",
     "viem": "^2.9.16",
-    "web3": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "5.0.2", // Updated
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-phantom": "^0.9.15",
     "buffer": "^6.0.3",
@@ -24,10 +23,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "npm-run-all --parallel start",
     "lint": "eslint src --ext .js,.jsx"
   },
-  "eslintConfig": {
+"Config": {
     "extends": [
       "react-app",
       "react-app/jest"
