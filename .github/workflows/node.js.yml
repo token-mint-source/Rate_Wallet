@@ -1,0 +1,48 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+        # Add TypeScript version matrix for compatibility testing
+        typescript-version: ['4.9.5']  # Add other versions if needed
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Include TypeScript version in cache key
+        cache: npm
+        cache-dependency-path: |
+          **/package-lock.json
+          **/package.json
+
+    - name: Update npm to latest
+      run: npm install -g npm@latest
+
+    - name: Install specific TypeScript version
+      run: npm install typescript@${{ matrix.typescript-version }} --save-exact
+
+    - name: Install dependencies with legacy peer deps
+      run: npm install --legacy-peer-deps
+
+    - name: Build project
+      run: npm run build --if-present
+
+    - name: Run tests
+      run: npm test
+
+    - name: Cleanup npm cache (optional)
+      run: npm cache clean --force
+      if: ${{ always() }}
