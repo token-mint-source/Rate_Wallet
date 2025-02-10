@@ -12,8 +12,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-        # Add TypeScript version matrix for compatibility testing
-        typescript-version: ['4.9.5']  # Add other versions if needed
 
     steps:
     - uses: actions/checkout@v4
@@ -22,20 +20,23 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        # Include TypeScript version in cache key
-        cache: npm
-        cache-dependency-path: |
-          **/package-lock.json
-          **/package.json
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
 
-    - name: Update npm to latest
-      run: npm install -g npm@latest
+    - name: Force npm update
+      run: |
+        npm install -g npm@11.1.0
+        npm config set fund false
+        npm config set audit false
 
-    - name: Install specific TypeScript version
-      run: npm install typescript@${{ matrix.typescript-version }} --save-exact
-
-    - name: Install dependencies with legacy peer deps
-      run: npm install --legacy-peer-deps
+    - name: Clean install dependencies
+      run: |
+        # Remove old lockfile if exists
+        rm -f package-lock.json
+        # Install exact TypeScript version required by react-scripts
+        npm install typescript@4.9.5 --save-exact
+        # Install remaining dependencies with forced resolution
+        npm install --legacy-peer-deps --force
 
     - name: Build project
       run: npm run build --if-present
@@ -43,6 +44,7 @@ jobs:
     - name: Run tests
       run: npm test
 
-    - name: Cleanup npm cache (optional)
-      run: npm cache clean --force
-      if: ${{ always() }}
+    - name: Verify installations
+      run: |
+        npm list typescript
+        npm list react-scripts
