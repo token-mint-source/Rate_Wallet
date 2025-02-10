@@ -12,7 +12,7 @@
     "viem": "^2.9.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.2", // Updated
+    "react-scripts": "5.0.2", 
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-phantom": "^0.9.15",
     "buffer": "^6.0.3",
