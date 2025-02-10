@@ -1,3 +1,6 @@
+import { Buffer } from 'buffer';
+     window.Buffer = Buffer;
+     window.process = require('process');
 import { WagmiConfig } from 'wagmi';
 import { ERC20_ABI } from './erc20-abi';
 const MAX_UINT256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
