@@ -23,28 +23,13 @@ jobs:
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
 
-    - name: Force npm update
-      run: |
-        npm install -g npm@11.1.0
-        npm config set fund false
-        npm config set audit false
-
-    - name: Clean install dependencies
-      run: |
-        # Remove old lockfile if exists
-        rm -f package-lock.json
-        # Install exact TypeScript version required by react-scripts
-        npm install typescript@4.9.5 --save-exact
-        # Install remaining dependencies with forced resolution
-        npm install --legacy-peer-deps --force
+    - name: Install dependencies
+      run: npm ci
 
     - name: Build project
-      run: npm run build --if-present
+      run: npm run build
 
     - name: Run tests
       run: npm test
 
-    - name: Verify installations
-      run: |
-        npm list typescript
-        npm list react-scripts
+  
